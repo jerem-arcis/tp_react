@@ -1,0 +1,403 @@
+import React, { useState } from 'react';
+import {Text,View,StyleSheet,Image,TextInput,ScrollView,Switch,StatusBar,TouchableOpacity,Alert,Button} from 'react-native';
+
+let PLATS = [
+  {
+    imageUrl:
+    'https://fr.frije.com/content/recipes/97935/800-1.jpg',
+    name: 'Pâte Carbo',
+    description:'Pate savoureuse avec une superbe sauce',
+    prix: '5 €',
+    prix2:'5',
+    isSelected: false,
+    id:"carbo",
+    titreIngredients:"Ingredients : ",
+    descriptionIngredient:'-Pâte \n-Lardon frais\n-Crème fraiche',
+    titreallergie:"Problème Allergie : ",
+    descriptionAllergie:"-Lardon\n-Crème fraiche",
+  },
+  {
+    imageUrl:
+    'https://www.lidl-recettes.fr/var/site/storage/images/_aliases/960x960/8/2/4/1/61428-3-fre-FR/Spaghetti-bolognaise.jpg',
+    name: 'Pâte Bolo',
+    description: 'Pate savoureuse avec une superbe sauce',
+    prix: '4 €',
+    prix2:'4',
+    isSelected: false,
+    id:"bolo",
+    titreIngredients:"Ingredients : ",
+    descriptionIngredient:'-Pâte\n-Viande fraiche\n-Sauce Tomate',
+    titreallergie:"Problème Allergie : ",
+    descriptionAllergie:"-Viande\n-Sauce tomate",
+  },
+  {
+    imageUrl:
+    'https://cdn.pratico-pratiques.com/app/uploads/sites/3/2018/08/02085357/pates-au-saumon-et-citron.jpg',
+    name: 'Pâte au saumon',
+    description: "Pate savoureuse avec une superbe sauce",
+    prix: '5 €',
+    prix2:'5',
+    isSelected: false,
+    id:"saumon",
+    titreIngredients:"Ingredients : ",
+    descriptionIngredient:'-Pâte\n-Saumon frais\n-Sauce Aux légumes',
+    titreallergie:"Problème Allergie : ",
+    descriptionAllergie:"-Saumon\n-Sauce aux légumes",
+  },
+  {
+    imageUrl:
+    'https://www.droit-travail-france.fr/photos/shutterstock_553397323.jpg',
+    name: 'Macdo',
+    description: 'Tout les menus sont disponibles ',
+    prix: '9 €',
+    prix2:'9',
+    isSelected: false,
+    id:"macdo",
+    titreIngredients:"Ingredients : ",
+    descriptionIngredient:'-Frites\n-Boisson\n-Burger/nuggets',
+    titreallergie:"Problème Allergie : ",
+    descriptionAllergie:"-Viande\n-Cornichon",
+  },
+  {
+    imageUrl:
+    'https://cdn.radiofrance.fr/s3/cruiser-production/2020/11/a518b8b3-9dca-4e31-a71b-c0878609b8ff/1200x680_maxnewsworldfive203737.jpg',
+    name: 'Burger King',
+    description: 'Tout les menus sont disponibles ',
+    prix: '9€',
+    prix2:'9',
+    isSelected: false,
+    id:"bk",
+    titreIngredients:"Ingredients : ",
+    descriptionIngredient:'-Les meilleurs Frites\n-Boisson\n-Burger/nuggets',
+    titreallergie:"Problème Allergie : ",
+    descriptionAllergie:"-Viande\n-Cornichon",
+  },
+  {
+    imageUrl:
+    'https://business.lesechos.fr/medias/2018/09/25/312583_subway-roi-des-sandwiches-en-franchise-1499760159-subway-52566.jpg',
+    name: 'Subway',
+    description: 'Tout les menus sont disponibles ',
+    prix: '9€',
+    prix2:'9',
+    isSelected: false,
+    id:"sub",
+    titreIngredients:"Ingredients : ",
+    descriptionIngredient:'-Pain sandwish\n-Boisson\n-Crudités',
+    titreallergie:"Problème Allergie : ",
+    descriptionAllergie:"-Pain\n-Crudités",
+  },
+  {
+    imageUrl:
+    'https://www.jeanne-darc-vitre.fr/media/thumbnails/dsc_0008__040848100_1534_06122018.jpg',
+    name: 'Burger Cantine',
+    description: 'Simple efficace',
+    prix: '3€',
+    prix2:'3',
+    isSelected: false,
+    id:"bugerc",
+    titreIngredients:"Ingredients : ",
+    descriptionIngredient:'-Frites\n-Boisson\n-Burger',
+    titreallergie:"Problème Allergie : ",
+    descriptionAllergie:"-Frites\n-Burger éclaté",
+  },
+];
+
+
+export default function App() {
+  let prixpanier = 0;
+  let solde = 100;
+  let [search, setSearch] = useState(``);
+  let [currentScreen, setCurrentScreen] = useState('menu'); // 'menu' ou 'cart' ou 'dish_details'
+  let [currentDish, setCurrentDish] = useState();
+  let [plats, setPlats] = useState(PLATS);
+
+  let selectedPlats = plats.filter(function (plat) {
+    return plat.isSelected;
+  });
+
+  let filteredPlats = plats.filter(function (plat) {
+    return plat.name
+      .toLocaleLowerCase()
+      .includes(search.toLocaleLowerCase());
+  });
+  if (currentScreen == 'cart') {
+    return (
+      <ScrollView><View style={head.container}>
+      <View style={{ flex: 1, backgroundColor: "#EEDFCC" }}>
+          <Text style={styles.title}>Delivecrous</Text>
+            <TouchableOpacity style={{borderWidth: 0, borderColor: 'red', width: 80, height: 80,}} onPress={function () {setCurrentScreen('menu');}}>
+              <Image style={{borderWidth: 0, borderColor: 'red', width: 50, height: 50 ,marginTop:"15%",marginLeft:"15%",}} source={require('./assets/fleche.png')}></Image>
+            </TouchableOpacity>
+            <View style={{alignItems: 'flex-end'}}>
+              <TouchableOpacity style={{width: 70, height: 70, marginRight:'1%',marginTop:"-20%"}} onPress={function () {setCurrentScreen('cart');}}>
+              </TouchableOpacity>
+            </View>
+        </View>
+        <View style={test.container}>
+           <Text style={[test.paragraph, test.paragraphInBlack]}>Le Panier</Text>
+           <View>
+            {selectedPlats.length > 0 ? (
+              selectedPlats.map(function (plats) {
+                prixpanier = Number(prixpanier) + Number(plats.prix2) ;
+                return(   
+				<View style={{flexDirection:'row',marginTop:"5%"}}>
+				
+				<View >
+				
+        <TouchableOpacity style={{ width: 80, height: 80,}} onPress={function () {plats.isSelected=false;}}>
+              <Image style={{ width: 30, height: 30 ,marginTop:'25%',margin:"35%"}} source={require('./assets/poubelle.jpg')}></Image>
+            </TouchableOpacity>
+				</View>
+								<View>
+                      <Image style={{width: 80, height: 80,marginLeft:'62%',borderRadius:20}} source={{uri: plats.imageUrl,}}></Image>                               
+				</View>
+				<View style={{justifyContent:'center', marginLeft:'-75%', marginTop:'-8%',margin:"-5%"}}>
+				<Text style={styles.cardText}>- {plats.name}</Text> 
+				</View>
+				</View>
+                )
+              })
+            ) : (
+              <Text style={[styles.cardText, { fontSize: 12, color: 'grey' }]}>
+                Aucun plat selectionné
+              </Text>
+            )}
+          </View>
+          <View style={{marginTop:"10%"}}>
+            <Text style={{ color:"grey",fontSize:20,fontStyle:"italic", textAlign:"center", marginBottom:"10%"}}> Cout Total :  {prixpanier}€</Text>
+          <Button
+onPress={function () {setCurrentScreen('valider');}}
+  title="Passer Commande"
+  color="green"
+/></View>
+          </View>
+        </View>
+      </ScrollView>
+    );
+  }
+  else if (currentScreen == 'dish_details') {
+    return (
+      <ScrollView>
+      <View style={{ flex: 1, backgroundColor: "#EEDFCC" }}>
+          <Text style={styles.title}>Delivecrous</Text>
+            <TouchableOpacity style={{borderWidth: 0, borderColor: 'red', width: 80, height: 80,}} onPress={function () {setCurrentScreen('menu');}}>
+              <Image style={{borderWidth: 0, borderColor: 'red', width: 50, height: 50 ,marginTop:"15%",marginLeft:"15%",}} source={require('./assets/fleche.png')}></Image>
+            </TouchableOpacity>
+            <View style={{alignItems: 'flex-end'}}>
+              <TouchableOpacity style={{width: 70, height: 70, marginRight:'1%',marginTop:"-20%"}} onPress={function () {setCurrentScreen('cart');}}>
+                <Text style={{marginTop: '-16%', marginBottom: '9%', textAlign:'center', fontSize: 25,fontWeight:"bold",marginLeft:"8%"}}>{selectedPlats.length}</Text><Image style={{width: 40, height: 40,alignSelf:"center",marginTop:"-25%"}} source={require('./assets/shopping-cart.png')}></Image>
+              </TouchableOpacity>
+            </View>
+        </View>
+        <Text style={{marginTop:"5%", textAlign:"center", fontSize:30,fontWeight:"bold"}}>{currentDish.name}</Text>
+        <Image style={{marginTop:"5%",marginBottom:"9%", width:"100%", height:250,borderRadius:20 }} source={{uri : currentDish.imageUrl}}></Image>
+        <Text style={{fontSize:24,fontWeight:"bold",marginLeft:"2%"}}>{currentDish.titreIngredients}</Text>
+        <Text style={{fontSize:20,marginLeft:"5%"}}>{currentDish.descriptionIngredient}</Text>
+        <Text style={{fontSize:24,fontWeight:"bold",marginLeft:"2%"}}>{currentDish.titreallergie}</Text>
+        <Text style={{fontSize:20,marginLeft:"5%"}}>{currentDish.descriptionAllergie}</Text>
+
+      </ScrollView>
+    );
+  }
+  else if (currentScreen == 'valider') {
+    return (
+      <ScrollView>
+      <View style={{ flex: 1, backgroundColor: "#EEDFCC" }}>
+          <Text style={styles.title} >Delivecrous</Text>
+            <TouchableOpacity style={{borderWidth: 0, borderColor: 'red', width: 80, height: 80,}} onPress={function () {setCurrentScreen('menu');}}>
+              <Image style={{borderWidth: 0, borderColor: 'red', width: 50, height: 50 ,marginTop:"15%",marginLeft:"15%",}} source={require('./assets/fleche.png')}></Image>
+            </TouchableOpacity>
+            <View style={{alignItems: 'flex-end'}}>
+              <TouchableOpacity style={{width: 70, height: 70, marginRight:'1%',marginTop:"-20%"}} onPress={function () {setCurrentScreen('cart');}}>
+              </TouchableOpacity>
+            </View>
+        </View>
+        <Image style={{width:250,height:250,alignSelf:"center"}} source={require('./assets/test.gif')}></Image>
+        <Text style={{marginTop:"10%", textAlign:"center", fontSize:22,fontWeight:"bold"}}>Commande envoyé</Text>
+        <Text style={{marginTop:"5%", textAlign:"center", fontSize:18,color:"grey",fontWeight:"bold"}}>Votre commande arrivera dans {"\n"} quelques minutes</Text>
+        <Text style={{marginTop:"50%", textAlign:"center", fontSize:22,fontStyle:"italic",color:"grey"}}>Votre solde est de :19,50€</Text>
+        
+      </ScrollView>
+
+    );
+  }
+  return (
+    
+    <ScrollView>
+      <View style={{ flex: 1, backgroundColor: "#EEDFCC" }}>
+          <Text style={styles.title}>Delivecrous</Text>
+            <TouchableOpacity style={{borderWidth: 0, borderColor: 'red', width: 80, height: 80,}} onPress={function () {setCurrentScreen('menu');}}>
+            </TouchableOpacity>
+            <View style={{alignItems: 'flex-end'}}>
+              <TouchableOpacity style={{width: 70, height: 70, marginRight:'1%',marginTop:"-20%"}} onPress={function () {setCurrentScreen('cart');}}>
+                <Text style={{marginTop: '-16%', marginBottom: '9%', textAlign:'center', fontSize: 25,fontWeight:"bold",marginLeft:"8%"}}>{selectedPlats.length}</Text><Image style={{width: 40, height: 40,alignSelf:"center",marginTop:"-25%"}} source={require('./assets/shopping-cart.png')}></Image>
+              </TouchableOpacity>
+            </View>
+        </View>
+    
+    <View style={test.container}>
+      <Text style={[test.paragraph, test.paragraphInBlack]}>La Carte</Text>
+    </View>
+      <View style={styles.container}>
+        <StatusBar backgroundColor={'black'}/>
+        <TextInput
+          placeholder="Rechercher un/des plat(s)..."
+          style={styles.searchInput}
+          value={search}
+          onChangeText={function (text) {
+            setSearch(text);
+          }}
+        />
+
+        <View style={styles.cardsContainer}>
+          {filteredPlats.map(function (plat) {
+            return (
+              <Card
+                onOpen={function () {
+                  setCurrentDish(plat);
+                  setCurrentScreen('dish_details');
+                }}
+                imageUrl={plat.imageUrl}
+                name={plat.name}
+                description={plat.description}
+                prix={plat.prix}
+                isSelected={plat.isSelected}
+                onSelect={function () {
+                  let newPlats = plats.map(function (c) {
+                    // Si c'est le plat concérné par le switch
+                    if (plat.name == c.name) {
+                      c.isSelected = !c.isSelected; // J'inverse son statut
+                      return c;
+                    }
+                    // Je retourne le plat tel qu'il est
+                    return c;
+                  });
+
+                  setPlats(newPlats);
+                }}
+              />
+            );
+          })}
+        </View>
+      </View>
+    </ScrollView>
+  );
+}
+
+
+function Card(props) {
+  return (
+    <View style={styles.cardContainer}>
+      <TouchableOpacity onPress={props.onOpen}>
+        <Image
+          style={styles.cardImage}
+          source={{
+            uri: props.imageUrl,
+          }}
+        />
+        <View style={styles.cardDescription}>
+          <Text style={[styles.cardText, { fontSize: 20, fontWeight: 'bold' }]}>
+            {props.name}
+          </Text>
+          <Text style={styles.cardText}>{props.description}</Text>
+          <Text style={styles.cardText}>{props.prix}</Text>
+        </View>
+      </TouchableOpacity>
+
+      <Switch
+        style={{ alignSelf: 'center' }}
+        value={props.isSelected}
+        onValueChange={props.onSelect}
+      />
+    </View>
+  );
+}
+
+const head = StyleSheet.create({
+  container: {
+    backgroundColor: '#E9D9C6',
+    justifyContent:"space-between",
+
+  },
+  paragraph: {
+    margin:'10%',
+    marginTop:'-20%',
+    fontSize: 25,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: 'black',
+  },
+  paragraphInBlack: {
+    color: 'black',
+    borderColor:"black",
+    width:"40%",
+    alignSelf:"center",
+  }
+})
+
+
+const test = StyleSheet.create({
+  container: {
+    padding: 15,
+    width:'100%',
+    marginBottom:'1%',
+    backgroundColor:"white",
+  },
+  paragraph: {
+    margin:'5%',
+    fontSize: 22,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: 'black', 
+  },
+  paragraphInBlack: {
+    color: 'black'
+  }
+})
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  title: {
+    marginTop: '8%',
+    marginBottom: '-15%',
+    textAlign:'center',
+    fontSize: 30,
+    fontWeight:"bold",
+  },
+  searchInput: {
+    width:'100%',
+    textAlign:'center',
+    color: 'black',
+    padding: 10, 
+    borderRadius: 4,
+    borderColor: 'grey',
+    borderWidth: 1,
+    marginBottom:'3%',
+  },
+  cardsContainer: {
+    width:'100%',
+  },
+  cardContainer: {
+    borderWidth:2,
+    borderRadius:20,
+    borderColor:'#eedfcc',
+    width: '100%',
+    marginBottom:10,
+  },
+  cardImage: {
+    height:250,
+    width:'100%',
+    borderRadius:15,
+  },
+  cardDescription: {
+    padding:1,
+  },
+  cardText: {
+    marginTop:'2%',
+    marginBottom:'2%',
+    fontSize: 16,
+    color: 'black',
+    textAlign:'center',
+  },
+});
